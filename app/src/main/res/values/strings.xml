@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">JC SQLite</string>
+    <string name="main_efab_add">Añadir</string>
+    <string name="add_hint_name">nombre del parque</string>
+    <string name="add_cb_favorite">Marcar como favorito</string>
+    <string name="add_btn_save">Añadir parque</string>
+    <string name="add_error_save">Error al guardar</string>
+    <string name="add_field_required">Obligatorio</string>
+    <string name="main_error_update">Error al actualizar</string>
+    <string name="main_error_remove">Error al eliminar</string>
+    <string name="dialog_title">Eliminar parque</string>
+    <string name="dialog_message_warning">Advertencia: Esta acción no puede deshacerse</string>
+    <string name="dialog_cancel">Cancelar</string>
+    <string name="dialog_delete">Eliminar</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="common_padding_none">0dp</dimen>
+    <dimen name="common_padding_nano">2dp</dimen>
+    <dimen name="common_padding_micro">4dp</dimen>
+    <dimen name="common_padding_min">8dp</dimen>
+    <dimen name="common_padding_default">16dp</dimen>
+    <dimen name="common_padding_middle">24dp</dimen>
+    <dimen name="common_padding_large">32dp</dimen>
+    <dimen name="common_padding_x_large">64dp</dimen>
+    <dimen name="img_item_list">128dp</dimen>
+    <dimen name="img_cover_size">160dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="img_list_size">64dp</dimen>
+
+</resources>
