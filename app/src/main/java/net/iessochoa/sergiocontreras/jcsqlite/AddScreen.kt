@@ -52,6 +52,7 @@ fun AddView(modifier: Modifier, onSave: (String, Boolean) -> Unit) {
 
     var nameValue by remember {mutableStateOf("")}
     var isFavorite by remember {mutableStateOf(false)}
+    var isError by remember { mutableStateOf(false)}
 
     val maxLength = integerResource(R.integer.name_max_length)
 
@@ -62,16 +63,24 @@ fun AddView(modifier: Modifier, onSave: (String, Boolean) -> Unit) {
             value = nameValue,
             onValueChange = {
                 if (it.length <= maxLength) nameValue = it
+                isError = nameValue.isEmpty()
             },
             label = {
                 Text(stringResource(R.string.add_hint_name))
             },
+            isError = isError,
             modifier = Modifier.fillMaxWidth(),
             supportingText = { //Esto es para el contador de caracteres
-                Text("${nameValue.length} / $maxLength",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.End
-                )
+                Row {
+                    if (isError) {
+                        Text(stringResource(R.string.add_field_required))
+                    }
+                    Text(
+                        "${nameValue.length} / $maxLength",
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.End
+                    )
+                }
             }
         )
         Row (
