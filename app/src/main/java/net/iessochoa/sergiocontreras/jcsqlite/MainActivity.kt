@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import net.iessochoa.sergiocontreras.jcsqlite.ui.theme.JCSQliteTheme
@@ -19,10 +23,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JCSQliteTheme {
+
+                var parks by remember { mutableStateOf(emptyList<Park>()) }
+                parks = parksPreview
+
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                    MainView (
+                        modifier = Modifier.padding(innerPadding),
+                        parks = parks,
+                        onClick = {},
+                        onLongClick = {}
                     )
                 }
             }
@@ -30,18 +40,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
+
+@Preview(showSystemUi = true)
 @Composable
 fun GreetingPreview() {
     JCSQliteTheme {
-        Greeting("Android")
+        MainViewPreview()
     }
 }

@@ -36,11 +36,7 @@ import net.iessochoa.sergiocontreras.jcsqlite.ui.theme.Typography
 fun ItemParkPreview() {
     JCSQliteTheme() {
         ItemParkView(
-            park = Park(
-                id = 1,
-                name = "Nombre parque",
-                isFavorite = true
-            ),
+            park = parkPreview,
             onClick = { },
             onLongClick = { }
         )
