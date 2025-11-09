@@ -5,8 +5,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -17,8 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import net.iessochoa.sergiocontreras.jcsqlite.ui.theme.JCSQliteTheme
 import net.iessochoa.sergiocontreras.jcsqlite.ui.theme.Typography
@@ -58,7 +58,7 @@ fun ItemParkView(park: Park, onClick: (Park) -> Unit, onLongClick: (Park) -> Uni
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = Icons.Default.Place,
+            imageVector = ImageVector.vectorResource(R.drawable.ic_park),
             contentDescription = "Icon Place",
             tint = colorResource(R.color.teal_700)
         )

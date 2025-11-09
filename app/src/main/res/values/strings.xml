@@ -12,4 +12,6 @@
     <string name="dialog_message_warning">Advertencia: Esta acción no puede deshacerse</string>
     <string name="dialog_cancel">Cancelar</string>
     <string name="dialog_delete">Eliminar</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_add">AddActivity</string>
 </resources>
