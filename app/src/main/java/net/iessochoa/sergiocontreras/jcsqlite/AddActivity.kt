@@ -22,7 +22,9 @@ class AddActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     AddView(
                         modifier = Modifier.padding(innerPadding),
-                        onSave = {name, isFavorite -> }
+                        onSave = {name, isFavorite ->
+                            finish()
+                        }
                     )
                 }
             }

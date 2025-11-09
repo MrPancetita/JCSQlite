@@ -1,11 +1,14 @@
 package net.iessochoa.sergiocontreras.jcsqlite
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +17,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import net.iessochoa.sergiocontreras.jcsqlite.ui.theme.JCSQliteTheme
 
@@ -27,7 +33,22 @@ class MainActivity : ComponentActivity() {
                 var parks by remember { mutableStateOf(emptyList<Park>()) }
                 parks = parksPreview
 
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    floatingActionButton = {
+                        ExtendedFloatingActionButton(
+                            onClick = { launchAdd() },
+                            icon = {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(R.drawable.ic_add),
+                                    contentDescription = "Add button icon",
+                                )
+                            },
+                            text = {
+                                Text(stringResource(R.string.main_efab_add))
+                            }
+                        )
+                    },
+                    modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainView (
                         modifier = Modifier.padding(innerPadding),
                         parks = parks,
@@ -37,6 +58,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+    private fun launchAdd() {
+        val intent = Intent(this, AddActivity::class.java)
+        startActivity(intent)
     }
 }
 
