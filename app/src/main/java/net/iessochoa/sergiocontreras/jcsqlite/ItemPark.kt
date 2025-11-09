@@ -20,6 +20,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import net.iessochoa.sergiocontreras.jcsqlite.ui.components.CustomCheckBox
 import net.iessochoa.sergiocontreras.jcsqlite.ui.theme.JCSQliteTheme
 import net.iessochoa.sergiocontreras.jcsqlite.ui.theme.Typography
 
@@ -70,7 +71,7 @@ fun ItemParkView(park: Park, onClick: (Park) -> Unit, onLongClick: (Park) -> Uni
             style = Typography.headlineSmall
         )
 
-        Checkbox(
+        /*Checkbox(
             checked = isFavorite,
             onCheckedChange = {
                 isFavorite = it
@@ -78,6 +79,17 @@ fun ItemParkView(park: Park, onClick: (Park) -> Unit, onLongClick: (Park) -> Uni
                 onClick(park)
             }
         )
-    }
+        */
+        CustomCheckBox (
+            checked = isFavorite,
+            onCheckedChange = {
+                isFavorite = it
+                park.isFavorite = isFavorite
+                 onClick(park)
+            }
+        )
+
+
+}
 
 }

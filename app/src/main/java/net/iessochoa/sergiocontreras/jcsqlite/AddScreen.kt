@@ -24,6 +24,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import net.iessochoa.sergiocontreras.jcsqlite.ui.components.CustomCheckBox
 import net.iessochoa.sergiocontreras.jcsqlite.ui.theme.JCSQliteTheme
 
 /**
@@ -77,7 +78,11 @@ fun AddView(modifier: Modifier, onSave: (String, Boolean) -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(
+            /*Checkbox(
+                checked = isFavorite,
+                onCheckedChange = {isFavorite = it}
+            )*/
+            CustomCheckBox(
                 checked = isFavorite,
                 onCheckedChange = {isFavorite = it}
             )
