@@ -10,12 +10,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -39,11 +43,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JCSQliteTheme {
+                val snackbarHostState = remember { SnackbarHostState() }
+                val scope = rememberCoroutineScope()
 
                 var parks by remember { mutableStateOf(emptyList<Park>()) }
                 // parks = parksPreview
 
                 Scaffold(
+                    snackbarHost = { SnackbarHost(snackbarHostState) },
                     floatingActionButton = {
                         ExtendedFloatingActionButton(
                             onClick = { launchAdd() },
@@ -63,7 +70,16 @@ class MainActivity : ComponentActivity() {
                     MainView(
                         modifier = Modifier.padding(innerPadding),
                         parks = parks,
-                        onClick = {},
+                        onClick = { park ->
+                            if(!db.updatePark(park)) {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = getString(R.string.add_error_save),
+                                        duration = SnackbarDuration.Long
+                                    )
+                                }
+                            }
+                        },
                         onLongClick = {}
                     )
                 }
