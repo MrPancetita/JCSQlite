@@ -62,7 +62,7 @@ fun MainView(
             modifier = modifier.fillMaxSize()
         ) {
             LazyColumn() {
-                items(parks.size) { index ->
+                items(count = parks.size, key = { parks[it].id }) { index ->
                     val park = parks[index]
                     ItemParkView(
                         park = park,
