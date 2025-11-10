@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import net.iessochoa.sergiocontreras.jcsqlite.sqlite.DatabaseHelper
+import net.iessochoa.sergiocontreras.jcsqlite.ui.components.CustomDialogInfo
 import net.iessochoa.sergiocontreras.jcsqlite.ui.theme.JCSQliteTheme
 
 class MainActivity : ComponentActivity() {
@@ -47,6 +48,9 @@ class MainActivity : ComponentActivity() {
                 val scope = rememberCoroutineScope()
 
                 var parks by remember { mutableStateOf(emptyList<Park>()) }
+                var openDialog by remember { mutableStateOf(false) }
+                var selectedPark: Park? = null
+
                 // parks = parksPreview
 
                 Scaffold(
@@ -80,9 +84,42 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         },
-                        onLongClick = {}
+                        onLongClick = { park ->
+                            selectedPark = park
+                            openDialog = true
+                        }
                     )
+
+                    if (openDialog) {
+                        selectedPark?.let { park ->
+                            CustomDialogInfo(
+                                info = stringResource(R.string.dialog_message_warning),
+                                titleRes = R.string.dialog_title,
+                                confirmRes = R.string.dialog_delete
+                            ) { delete ->
+                                if (delete) {
+                                    if (db.deletePark(park)) {
+                                        parks = parks - park
+                                    } else {
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                message = getString(R.string.main_error_remove),
+                                                duration = SnackbarDuration.Long
+                                            )
+                                        }
+                                    }
+                                }
+
+                                openDialog = false
+                            }
+
+                        }
+                    }
+
+
                 }
+
+
 
                 val lifecycleObserver = LifecycleEventObserver {_, event ->
                     when (event) {
