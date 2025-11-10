@@ -1,9 +1,11 @@
 package net.iessochoa.sergiocontreras.jcsqlite
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -28,6 +30,8 @@ fun MainViewPreview() {
         MainView(
             modifier = Modifier.padding(24.dp),
             parks = parksPreview,
+            isRefreshing = false,
+            onRefresh = {},
             onClick = {},
             onLongClick = {}
         )
@@ -38,6 +42,8 @@ fun MainViewPreview() {
 fun MainView(
     modifier: Modifier,
     parks: List<Park>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     onClick: (Park) -> Unit,
     onLongClick: (Park) -> Unit
 ) {
@@ -50,17 +56,24 @@ fun MainView(
             style = Typography.displaySmall
         )
 
-        LazyColumn() {
-            items(parks.size) { index ->
-                val park = parks[index]
-                ItemParkView(
-                    park = park,
-                    onClick = onClick,
-                    onLongClick = onLongClick
-                )
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
+            modifier = modifier.fillMaxSize()
+        ) {
+            LazyColumn() {
+                items(parks.size) { index ->
+                    val park = parks[index]
+                    ItemParkView(
+                        park = park,
+                        onClick = onClick,
+                        onLongClick = onLongClick
+                    )
 
+                }
             }
         }
+
 
     }
 

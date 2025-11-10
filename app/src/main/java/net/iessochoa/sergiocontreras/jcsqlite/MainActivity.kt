@@ -49,7 +49,19 @@ class MainActivity : ComponentActivity() {
 
                 var parks by remember { mutableStateOf(emptyList<Park>()) }
                 var openDialog by remember { mutableStateOf(false) }
+                var isRefreshing by remember { mutableStateOf(false) }
                 var selectedPark: Park? = null
+
+                val refresh = {
+                    isRefreshing = true
+                    lifecycleScope.launch {
+                        refreshData { result ->
+                            parks = result
+                            isRefreshing = false
+                        }
+                    }
+                }
+
 
                 // parks = parksPreview
 
@@ -74,6 +86,8 @@ class MainActivity : ComponentActivity() {
                     MainView(
                         modifier = Modifier.padding(innerPadding),
                         parks = parks,
+                        isRefreshing = isRefreshing,
+                        onRefresh =  { refresh() },
                         onClick = { park ->
                             if(!db.updatePark(park)) {
                                 scope.launch {
@@ -124,16 +138,12 @@ class MainActivity : ComponentActivity() {
                 val lifecycleObserver = LifecycleEventObserver {_, event ->
                     when (event) {
                         Lifecycle.Event.ON_RESUME  -> {
-                            lifecycleScope.launch {
-                                refreshData { result ->
-                                    parks = result
-                                }
+                                refresh()
                             }
-
-                        }
                         else -> {}
-                    }
+                        }
                 }
+
                 val lifecycle = LocalLifecycleOwner.current.lifecycle
                 DisposableEffect(lifecycle) {
                     lifecycle.addObserver(lifecycleObserver)
@@ -160,8 +170,9 @@ class MainActivity : ComponentActivity() {
         startActivity(intent)
     }
 
-    private fun refreshData(onResult: (List<Park>) -> Unit) {
+    private suspend fun refreshData(onResult: (List<Park>) -> Unit) {
         val parks = db.getAllParks()
+        simulateDelay()
         onResult(parks)
 
 

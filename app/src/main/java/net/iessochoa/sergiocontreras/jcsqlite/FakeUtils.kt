@@ -1,5 +1,8 @@
 package net.iessochoa.sergiocontreras.jcsqlite
 
+import kotlinx.coroutines.delay
+import kotlin.random.Random
+
 /**
  * Project: JC SQlite
  * From: net.iessochoa.sergiocontreras.jcsqlite
@@ -10,3 +13,11 @@ package net.iessochoa.sergiocontreras.jcsqlite
 
 val parkPreview = Park(1, "Parque preview", true)
 val parksPreview = List(4) { parkPreview } //True Kotlin mejor
+
+suspend fun simulateDelay() {
+    delay(Random.nextLong(300, 1500))
+}
+
+suspend fun simulateDelayLong() {
+    delay(Random.nextLong(3000, 5000))
+}
