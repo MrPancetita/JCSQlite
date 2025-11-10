@@ -47,7 +47,7 @@ fun ItemParkPreview() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ItemParkView(park: Park, onClick: (Park) -> Unit, onLongClick: (Park) -> Unit) {
-    var isFavorite by remember { mutableStateOf(false) }
+    var isFavorite by remember { mutableStateOf(park.isFavorite) }
     Row(
         modifier = Modifier
             .fillMaxWidth()

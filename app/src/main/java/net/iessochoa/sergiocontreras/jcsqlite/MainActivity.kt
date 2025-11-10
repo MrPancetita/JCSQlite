@@ -12,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,9 +22,18 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import net.iessochoa.sergiocontreras.jcsqlite.sqlite.DatabaseHelper
 import net.iessochoa.sergiocontreras.jcsqlite.ui.theme.JCSQliteTheme
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var db: DatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,7 +41,7 @@ class MainActivity : ComponentActivity() {
             JCSQliteTheme {
 
                 var parks by remember { mutableStateOf(emptyList<Park>()) }
-                parks = parksPreview
+                // parks = parksPreview
 
                 Scaffold(
                     floatingActionButton = {
@@ -48,20 +58,60 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     },
-                    modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainView (
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+                    MainView(
                         modifier = Modifier.padding(innerPadding),
                         parks = parks,
                         onClick = {},
                         onLongClick = {}
                     )
                 }
+
+                val lifecycleObserver = LifecycleEventObserver {_, event ->
+                    when (event) {
+                        Lifecycle.Event.ON_RESUME  -> {
+                            lifecycleScope.launch {
+                                refreshData { result ->
+                                    parks = result
+                                }
+                            }
+
+                        }
+                        else -> {}
+                    }
+                }
+                val lifecycle = LocalLifecycleOwner.current.lifecycle
+                DisposableEffect(lifecycle) {
+                    lifecycle.addObserver(lifecycleObserver)
+                    onDispose {
+                        lifecycle.removeObserver(lifecycleObserver)
+                    }
+                }
+
+
             }
         }
+
+        setupDatabase()
+
+
     }
+
+    private fun setupDatabase() {
+        db = DatabaseHelper(this)
+    }
+
     private fun launchAdd() {
         val intent = Intent(this, AddActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun refreshData(onResult: (List<Park>) -> Unit) {
+        val parks = db.getAllParks()
+        onResult(parks)
+
+
     }
 }
 
